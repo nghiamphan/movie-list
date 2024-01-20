@@ -1,0 +1,149 @@
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Box, Card, CardContent, CardMedia, Checkbox, Container, Link, Typography } from '@mui/material'
+import StarIcon from '@mui/icons-material/Star'
+
+import { addToMovieList, removeFromMovieList } from '../reducers/movieListReducer'
+
+const Movie = ({ index, movie }) => {
+    const dispatch = useDispatch()
+    const user = useSelector((state) => state.user)
+    const watched = useSelector((state) => state.movieList.watched)
+    const watchlist = useSelector((state) => state.movieList.watchlist)
+
+    const {
+        imdbId,
+        title,
+        year,
+        runtime,
+        genre,
+        director,
+        actors,
+        plot,
+        language,
+        country,
+        poster,
+        metascore,
+        rottenTomatoesRating,
+        imdbRating,
+        imdbVotes,
+        boxOffice,
+        inMovieLists,
+    } = movie
+
+    const handleWatchedOnClick = (event, imdbId) => {
+        if (event.target.checked) {
+            dispatch(addToMovieList(watched, imdbId, 'watched'))
+        } else {
+            dispatch(removeFromMovieList(watched, imdbId, 'watched'))
+        }
+    }
+
+    const handleWatchlistOnClick = (event, imdbId) => {
+        if (event.target.checked) {
+            dispatch(addToMovieList(watchlist, imdbId, 'watchlist'))
+        } else {
+            dispatch(removeFromMovieList(watchlist, imdbId, 'watchlist'))
+        }
+    }
+    return (
+        <Card sx={{ display: 'flex' }}>
+            <CardMedia
+                component="img"
+                sx={{ width: 150, maxHeight: 300, py: 1 }}
+                image={poster}
+                alt={title}
+            />
+
+            <CardContent sx={{ width: 1000, py: 1 }}>
+                <Typography variant="h6">
+                    <span style={{ fontSize: 16 }}>{index + 1}. </span>
+                    <Link href={`https://www.imdb.com/title/${imdbId}`} target="_blank">
+                        {title}
+                    </Link>
+                    <span style={{ fontSize: 14 }}> ({year})</span>
+                </Typography>
+
+                <Typography variant="caption">
+                    {runtime} <span style={{ padding: 5 }}>•</span> {genre}{' '}
+                    <span style={{ padding: 5 }}>•</span> {country} <span style={{ padding: 5 }}>•</span>{' '}
+                    {language}
+                </Typography>
+
+                <Typography variant="body2">
+                    <span style={{ fontSize: 12 }}>IMDB Votes: </span>
+                    {imdbVotes}
+                    <span style={{ paddingLeft: 20 }}>
+                        <StarIcon sx={{ py: 0, mb: -0.2, width: 15, height: 15 }} /> {imdbRating}
+                    </span>
+                    <span style={{ fontSize: 12, paddingLeft: 20 }}>Metacritic: </span>
+                    {metascore}
+                    <span style={{ fontSize: 12, paddingLeft: 20 }}>Rotten Tomatoes: </span>
+                    {rottenTomatoesRating}
+                    {boxOffice && boxOffice !== 'N/A' && (
+                        <>
+                            <span style={{ fontSize: 12, paddingLeft: 20 }}>Gross: </span>
+                            {boxOffice}
+                        </>
+                    )}
+                </Typography>
+
+                <Typography variant="caption">
+                    <span style={{ fontStyle: 'italic', color: 'gray' }}>Director:</span> {director}
+                    <span style={{ padding: 10 }}>|</span>
+                    <span style={{ fontStyle: 'italic', color: 'gray' }}>Stars:</span> {actors}
+                </Typography>
+
+                <Typography variant="body2" sx={{ py: 1 }}>
+                    {plot}
+                </Typography>
+
+                <Typography variant="caption">
+                    <span style={{ fontStyle: 'italic', color: 'gray' }}>In lists:</span>{' '}
+                    {inMovieLists.join(', ')}
+                </Typography>
+            </CardContent>
+            {user && watched.imdbIds && watchlist.imdbIds && (
+                <Box sx={{ alignSelf: 'center' }}>
+                    <Typography variant="caption">Watched</Typography>
+                    <Checkbox
+                        checked={watched.imdbIds.includes(imdbId)}
+                        onChange={(event) => handleWatchedOnClick(event, imdbId)}
+                    />
+                    <br />
+                    <Typography variant="caption">Watchlist</Typography>
+                    <Checkbox
+                        checked={watchlist.imdbIds.includes(imdbId)}
+                        onChange={(event) => {
+                            handleWatchlistOnClick(event, imdbId)
+                        }}
+                    />
+                </Box>
+            )}
+        </Card>
+    )
+}
+
+const Movies = () => {
+    const movies = useSelector((state) => state.movies)
+    const listName = useSelector((state) => state.movieList.currentMovieListName)
+
+    return (
+        <Container sx={{ marginTop: 12 }}>
+            {listName ? (
+                <Typography sx={{ marginBottom: 2 }} variant="h5">
+                    {listName}
+                </Typography>
+            ) : (
+                <p>Choose some movie list from the menu bar.</p>
+            )}
+            {movies.length === 0 && listName ? (
+                <Typography>No movies in this list</Typography>
+            ) : (
+                movies.map((movie, index) => <Movie key={movie.imdbId} movie={movie} index={index} />)
+            )}
+        </Container>
+    )
+}
+
+export default Movies
