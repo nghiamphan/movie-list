@@ -98,10 +98,12 @@ const Movie = ({ index, movie }) => {
                     {plot}
                 </Typography>
 
-                <Typography variant="caption">
-                    <span style={{ fontStyle: 'italic', color: 'gray' }}>In lists:</span>{' '}
-                    {inMovieLists.join(', ')}
-                </Typography>
+                {inMovieLists && (
+                    <Typography variant="caption">
+                        <span style={{ fontStyle: 'italic', color: 'gray' }}>In lists:</span>{' '}
+                        {inMovieLists.join(', ')}
+                    </Typography>
+                )}
             </CardContent>
             {user && watched.imdbIds && watchlist.imdbIds && (
                 <Box sx={{ alignSelf: 'center' }}>

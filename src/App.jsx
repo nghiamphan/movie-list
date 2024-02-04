@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom'
 import { AppBar, Box, Button, Container, Toolbar, Typography } from '@mui/material'
 
+import SearchMovies from './components/SearchMovies'
 import { LoginForm, RegisterForm } from './components/LoginForm'
 import { MovieListDrawer } from './components/MovieList'
 import Movies from './components/Movie'
@@ -64,7 +65,7 @@ const App = () => {
                         </Link>
 
                         <Link to="/watchlist">
-                            <Typography sx={{ alignSelf: 'center', marginRight: 2 }}>
+                            <Typography sx={{ alignSelf: 'center', marginLeft: 1, marginRight: 1 }}>
                                 <Button sx={{ color: 'white' }} onClick={handleWatchlistClick}>
                                     My watchlist
                                 </Button>
@@ -72,12 +73,14 @@ const App = () => {
                         </Link>
 
                         <Link to="/watchhistory">
-                            <Typography sx={{ alignSelf: 'center', marginRight: 2 }}>
+                            <Typography sx={{ alignSelf: 'center', marginRight: 1 }}>
                                 <Button sx={{ color: 'white' }} onClick={handleWatchHistoryClick}>
                                     Watch history
                                 </Button>
                             </Typography>
                         </Link>
+
+                        <SearchMovies />
                     </Box>
 
                     <Box sx={{ display: 'flex', alignSelf: 'flex-right' }}>
@@ -105,6 +108,7 @@ const App = () => {
                     </Box>
                 </Toolbar>
             </AppBar>
+
             <Routes>
                 <Route path="/" element={<Movies />} />
                 <Route

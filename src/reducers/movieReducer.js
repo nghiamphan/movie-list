@@ -12,6 +12,13 @@ const movieSearchReducer = createSlice({
     },
 })
 
+export const searchMovies = (query) => {
+    return async (dispatch) => {
+        const movies = await movieService.searchMovies(query)
+        dispatch(setMovies(movies))
+    }
+}
+
 export const fetchMovies = (imdbIds) => {
     return async (dispatch) => {
         const movies = await movieService.getMoviesByImdbIds(imdbIds)
