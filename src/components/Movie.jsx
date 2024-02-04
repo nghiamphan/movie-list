@@ -31,6 +31,8 @@ const Movie = ({ index, movie }) => {
         inMovieLists,
     } = movie
 
+    const justWatchUrl = 'https://www.justwatch.com/us/search?q='
+
     const handleWatchedOnClick = (event, imdbId) => {
         if (event.target.checked) {
             dispatch(addToMovieList(watched, imdbId, 'watched'))
@@ -104,6 +106,12 @@ const Movie = ({ index, movie }) => {
                         {inMovieLists.join(', ')}
                     </Typography>
                 )}
+
+                <Typography variant="body2">
+                    <Link href={`${justWatchUrl}${title}`} target="_blank">
+                        Where to watch
+                    </Link>
+                </Typography>
             </CardContent>
             {user && watched.imdbIds && watchlist.imdbIds && (
                 <Box sx={{ alignSelf: 'center' }}>
