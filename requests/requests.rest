@@ -8,6 +8,9 @@ GET http://localhost:3001/api/movies?title=brave
 ### search movie by title and year
 GET http://localhost:3001/api/movies?title=brave&year=2012
 
+### search movie by title or director or actor
+GET http://localhost:3001/api/movies?query=brave
+
 ### get movie by imdbId
 GET http://localhost:3001/api/movies/tt1217209
 

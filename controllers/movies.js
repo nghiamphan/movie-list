@@ -1,6 +1,7 @@
 const router = require('express').Router()
-const { Op } = require('sequelize')
+const { Op, Sequelize } = require('sequelize')
 const { Movie } = require('../models')
+const { sequelize } = require('../util/db')
 
 const movieFinder = async (req, res, next) => {
     req.movie = await Movie.findByPk(req.params.id)
@@ -11,12 +12,13 @@ const movieFinder = async (req, res, next) => {
  * GET /api/movies
  * GET /api/movies?title=brave
  * GET /api/movies?title=brave&year=2012
+ * GET /api/movies?query=brave
  */
 router.get('/', async (req, res) => {
-    if (!req.query.title) {
+    if (Object.keys(req.query).length === 0) {
         const movies = await Movie.findAll()
         res.json(movies)
-    } else {
+    } else if (req.query.title) {
         const whereCondition = {
             title: {
                 [Op.iLike]: req.query.title,
@@ -27,6 +29,34 @@ router.get('/', async (req, res) => {
         }
         const movie = await Movie.findOne({ where: whereCondition })
         res.json(movie)
+    } else if (req.query.query) {
+        const query = req.query.query.toLowerCase()
+        const rawMovies = await sequelize.query(
+            `
+            SELECT * FROM Movies
+            WHERE LOWER(title) LIKE '%${query}%' OR LOWER(director) LIKE '%${query}%' OR LOWER(actors) LIKE '%${query}%'
+            ORDER BY
+                CASE
+                    WHEN LOWER(title) = '${query}' THEN 1
+                    WHEN LOWER(title) LIKE '%${query}%' THEN 2
+                    WHEN LOWER(director) = '${query}' OR LOWER(actors) = '${query}' THEN 3
+                    WHEN LOWER(director) LIKE '%${query}%' OR LOWER(actors) LIKE '%${query}%' THEN 4
+                END,
+                CAST(REPLACE(imdb_votes, ',', '') AS INT) DESC
+            `,
+            { type: Sequelize.QueryTypes.SELECT }
+        )
+
+        const movies = rawMovies.map((movie) => ({
+            ...movie,
+            imdbId: movie.imdb_id,
+            rottenTomatoesRating: movie.rotten_tomatoes_rating,
+            imdbRating: movie.imdb_rating,
+            imdbVotes: movie.imdb_votes,
+            boxOffice: movie.box_office,
+            inMovieLists: movie.in_movie_lists,
+        }))
+        res.json(movies)
     }
 })
 
