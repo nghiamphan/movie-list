@@ -165,6 +165,7 @@ const main = async () => {
         { file: 'AFI 100 Cheers (2006).txt', name: 'AFI 100 Cheers (2006)' },
         { file: 'AFI 25 Musicals (2006).txt', name: 'AFI 25 Musicals (2006)' },
         { file: 'AFI 10 Top 10 (2008).txt', name: 'AFI 10 Top 10 (2008)' },
+        { file: 'National Film Registry.txt', name: 'National Film Registry' },
         { file: 'BFI Sight and Sound Top 250 (2022).txt', name: 'BFI Sight & Sound Top 250 (2022)' },
         { file: 'BFI 100 British Films (1999).txt', name: 'BFI 100 British Films (1999)' },
         { file: '100 Italian Films to be saved (2008).txt', name: '100 Italian Films to be saved (2008)' },
