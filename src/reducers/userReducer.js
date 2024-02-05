@@ -3,7 +3,7 @@ import movieListService from '../services/movieLists'
 import {
     fetchWatched,
     fetchWatchlist,
-    setCurrentMovieListName,
+    setCurrentMovieList,
     setWatched,
     setWatchlist,
 } from './movieListReducer'
@@ -49,7 +49,7 @@ export const logout = () => {
         dispatch(setUser(null))
         dispatch(setWatchlist({}))
         dispatch(setWatched({}))
-        dispatch(setCurrentMovieListName(''))
+        dispatch(setCurrentMovieList({}))
         dispatch(fetchMovies([]))
 
         logger.info('Logout: ', LOGGGED_MOVIE_USER, window.localStorage.getItem(LOGGGED_MOVIE_USER))

@@ -23,7 +23,7 @@ import {
     fetchDefaultMovieLists,
     fetchWatched,
     fetchWatchlist,
-    setCurrentMovieListName,
+    setCurrentMovieList,
 } from './reducers/movieListReducer'
 import { setUser, logout } from './reducers/userReducer'
 import { fetchMovies } from './reducers/movieReducer'
@@ -70,16 +70,16 @@ const App = () => {
     const handleWatchlistClick = () => {
         if (user) {
             window.scrollTo(0, 0)
+            dispatch(setCurrentMovieList({ ...watchlist, name: 'Your Watchlist' }))
             dispatch(fetchMovies(watchlist.imdbIds))
-            dispatch(setCurrentMovieListName('My watchlist'))
         }
     }
 
     const handleWatchHistoryClick = () => {
         if (user) {
             window.scrollTo(0, 0)
+            dispatch(setCurrentMovieList({ ...watched, name: 'Your Watch History' }))
             dispatch(fetchMovies(watched.imdbIds))
-            dispatch(setCurrentMovieListName('Watch history'))
         }
     }
 

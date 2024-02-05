@@ -7,7 +7,7 @@ import movieListService from '../services/movieLists'
  *    defaultMovieLists: [movieListObject, movieListObject, ...],
  *    watchlist: {movieListObject},
  *    watched: {movieListObject},
- *    currentMovieListName: string,
+ *    currentMovieList: {movieListObject},
  * }
  * movieListObject:
  * {
@@ -24,7 +24,7 @@ const movieListReducer = createSlice({
         defaultMovieLists: [],
         watchlist: {},
         watched: {},
-        currentMovieListName: '',
+        currentMovieList: {},
     },
     reducers: {
         setDefaultMovieLists: (state, action) => {
@@ -39,8 +39,8 @@ const movieListReducer = createSlice({
             state.watched = action.payload
             return state
         },
-        setCurrentMovieListName: (state, action) => {
-            state.currentMovieListName = action.payload
+        setCurrentMovieList: (state, action) => {
+            state.currentMovieList = action.payload
             return state
         },
     },
@@ -105,6 +105,6 @@ export const removeFromMovieList = (movieList, imdbId, type) => {
     }
 }
 
-export const { setDefaultMovieLists, setWatchlist, setWatched, setCurrentMovieListName } =
+export const { setDefaultMovieLists, setWatchlist, setWatched, setCurrentMovieList } =
     movieListReducer.actions
 export default movieListReducer.reducer

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button, Drawer, List, ListItemButton, ListItemText } from '@mui/material'
 
 import { fetchMovies } from '../reducers/movieReducer'
-import { setCurrentMovieListName } from '../reducers/movieListReducer'
+import { setCurrentMovieList } from '../reducers/movieListReducer'
 
 const MovieLists = () => {
     const dispatch = useDispatch()
@@ -12,8 +12,8 @@ const MovieLists = () => {
 
     const handleOnClick = (movieList) => {
         window.scrollTo(0, 0)
+        dispatch(setCurrentMovieList(movieList))
         dispatch(fetchMovies(movieList.imdbIds))
-        dispatch(setCurrentMovieListName(movieList.name))
     }
 
     return (

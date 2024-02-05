@@ -6,7 +6,7 @@ import { useTheme } from '@mui/material/styles'
 import SearchIcon from '@mui/icons-material/Search'
 
 import { searchMovies } from '../reducers/movieReducer'
-import { setCurrentMovieListName } from '../reducers/movieListReducer'
+import { setCurrentMovieList } from '../reducers/movieListReducer'
 
 const SearchMovies = () => {
     const theme = useTheme()
@@ -20,7 +20,7 @@ const SearchMovies = () => {
                 navigate('/')
                 window.scrollTo(0, 0)
                 dispatch(searchMovies(query))
-                dispatch(setCurrentMovieListName('Search results'))
+                dispatch(setCurrentMovieList({ name: 'Search results' }))
             }
         }
     }

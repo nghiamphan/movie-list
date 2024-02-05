@@ -36,7 +36,7 @@ const Form = ({
                 onChange={({ target }) => setPassword(target.value)}
             />
             <br />
-            {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
+            {errorMessage && <div style={{ color: 'red', marginTop: 10 }}>{errorMessage}</div>}
             <Button sx={{ marginTop: 2 }} type="submit" variant="contained">
                 {buttonText}
             </Button>

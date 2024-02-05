@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
     Box,
@@ -15,6 +15,7 @@ import { useTheme } from '@mui/material/styles'
 import StarIcon from '@mui/icons-material/Star'
 
 import { addToMovieList, removeFromMovieList } from '../reducers/movieListReducer'
+import { fetchAdditionalMovies } from '../reducers/movieReducer'
 
 const Movie = ({ index, movie }) => {
     const theme = useTheme()
@@ -65,7 +66,7 @@ const Movie = ({ index, movie }) => {
             <Card sx={{ display: 'flex', background: theme.palette.background.default }}>
                 <CardMedia
                     component="img"
-                    sx={{ width: 150, maxHeight: 300, py: 1 }}
+                    sx={{ minWidth: 150, width: 150, height: '100%', py: 1 }}
                     image={poster}
                     alt={title}
                 />
@@ -113,7 +114,7 @@ const Movie = ({ index, movie }) => {
                         {plot}
                     </Typography>
 
-                    {inMovieLists && (
+                    {inMovieLists && inMovieLists.length > 0 && (
                         <Typography variant="caption">
                             <span style={{ fontStyle: 'italic', color: 'gray' }}>In lists:</span>{' '}
                             {inMovieLists.join(', ')}
@@ -152,7 +153,19 @@ const Movie = ({ index, movie }) => {
 const Movies = () => {
     const theme = useTheme()
     const movies = useSelector((state) => state.movies)
-    const listName = useSelector((state) => state.movieList.currentMovieListName)
+    const listName = useSelector((state) => state.movieList.currentMovieList.name)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        window.addEventListener('scroll', () => {
+            if (
+                window.innerHeight + document.documentElement.scrollTop ===
+                document.documentElement.offsetHeight
+            ) {
+                dispatch(fetchAdditionalMovies())
+            }
+        })
+    }, [])
 
     return (
         <Container sx={{ marginTop: 12, color: theme.palette.text.primary }}>
