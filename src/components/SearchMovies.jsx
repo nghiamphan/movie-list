@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Box, InputBase } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import SearchIcon from '@mui/icons-material/Search'
 
 import { searchMovies } from '../reducers/movieReducer'
 import { setCurrentMovieListName } from '../reducers/movieListReducer'
 
 const SearchMovies = () => {
+    const theme = useTheme()
     const dispatch = useDispatch()
     const [query, setQuery] = useState('')
 
@@ -25,7 +27,7 @@ const SearchMovies = () => {
             sx={{
                 display: 'flex',
                 alignItems: 'center',
-                background: 'gray',
+                background: theme.palette.background.paper,
                 marginLeft: 1,
                 marginRight: 1,
             }}
@@ -37,7 +39,7 @@ const SearchMovies = () => {
                 onChange={(event) => setQuery(event.target.value)}
                 onKeyDown={handleSearch}
             />
-            <SearchIcon sx={{ marginRight: 1 }} onClick={handleSearch} />
+            <SearchIcon sx={{ marginRight: 1, color: theme.palette.text.primary }} onClick={handleSearch} />
         </Box>
     )
 }

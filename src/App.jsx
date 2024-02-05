@@ -2,7 +2,17 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom'
-import { AppBar, Box, Button, Container, Toolbar, Typography } from '@mui/material'
+import {
+    AppBar,
+    Box,
+    Button,
+    Container,
+    ThemeProvider,
+    Toolbar,
+    Typography,
+    createTheme,
+} from '@mui/material'
+import { makeStyles } from '@mui/styles'
 
 import SearchMovies from './components/SearchMovies'
 import { LoginForm, RegisterForm } from './components/LoginForm'
@@ -19,7 +29,25 @@ import { setUser, logout } from './reducers/userReducer'
 import { fetchMovies } from './reducers/movieReducer'
 import { LOGGGED_MOVIE_USER } from './utils/config'
 
+const theme = createTheme({
+    palette: {
+        mode:
+            window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light',
+    },
+})
+
+const useStyles = makeStyles({
+    '@global': {
+        body: {
+            backgroundColor: theme.palette.background.default,
+        },
+    },
+})
+
 const App = () => {
+    useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const user = useSelector((state) => state.user)
@@ -56,7 +84,7 @@ const App = () => {
     }
 
     return (
-        <>
+        <ThemeProvider theme={theme}>
             <AppBar>
                 <Toolbar>
                     <Box sx={{ display: 'inline-flex', flexGrow: 1 }}>
@@ -117,7 +145,9 @@ const App = () => {
                         user ? (
                             <Movies />
                         ) : (
-                            <Container sx={{ marginTop: 12 }}>Login to see your watchlist.</Container>
+                            <Container sx={{ marginTop: 12, color: theme.palette.text.primary }}>
+                                Login to see your watchlist.
+                            </Container>
                         )
                     }
                 />
@@ -127,14 +157,16 @@ const App = () => {
                         user ? (
                             <Movies />
                         ) : (
-                            <Container sx={{ marginTop: 12 }}>Login to see your watch history.</Container>
+                            <Container sx={{ marginTop: 12, color: theme.palette.text.primary }}>
+                                Login to see your watch history.
+                            </Container>
                         )
                     }
                 />
                 <Route path="/login" element={!user ? <LoginForm /> : <Navigate to="/" />} />
                 <Route path="/register" element={!user ? <RegisterForm /> : <Navigate to="/" />} />
             </Routes>
-        </>
+        </ThemeProvider>
     )
 }
 

@@ -20,6 +20,7 @@ const Form = ({
     <Container sx={{ marginTop: 16 }}>
         <form onSubmit={onSubmit}>
             <TextField
+                sx={{ marginTop: 2 }}
                 label="Username"
                 value={username}
                 error={error.username}
@@ -27,6 +28,7 @@ const Form = ({
             />
             <br />
             <TextField
+                sx={{ marginTop: 2 }}
                 label="Password"
                 type="password"
                 value={password}
@@ -35,7 +37,7 @@ const Form = ({
             />
             <br />
             {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
-            <Button type="submit" variant="contained">
+            <Button sx={{ marginTop: 2 }} type="submit" variant="contained">
                 {buttonText}
             </Button>
         </form>
