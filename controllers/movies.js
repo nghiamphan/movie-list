@@ -42,7 +42,11 @@ router.get('/', async (req, res) => {
                     WHEN LOWER(director) = '${query}' OR LOWER(actors) = '${query}' THEN 3
                     WHEN LOWER(director) LIKE '%${query}%' OR LOWER(actors) LIKE '%${query}%' THEN 4
                 END,
-                CAST(REPLACE(imdb_votes, ',', '') AS INT) DESC
+                CASE
+                    WHEN imdb_votes IS NOT NULL AND imdb_votes != 'N/A' THEN CAST(REPLACE(imdb_votes, ',', '') AS INT)
+                    ELSE 0
+                END DESC
+            LIMIT 100
             `,
             { type: Sequelize.QueryTypes.SELECT }
         )
