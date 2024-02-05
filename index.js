@@ -10,6 +10,7 @@ const cors = require('cors')
 app.use(cors())
 app.use(express.json())
 app.use(middleware.requestLogger)
+app.use(express.static('dist'))
 
 const movieRouter = require('./controllers/movies')
 const movieListRouter = require('./controllers/movieLists')
