@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { Box, InputBase } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import SearchIcon from '@mui/icons-material/Search'
@@ -10,11 +11,13 @@ import { setCurrentMovieListName } from '../reducers/movieListReducer'
 const SearchMovies = () => {
     const theme = useTheme()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const [query, setQuery] = useState('')
 
     const handleSearch = (event) => {
         if (event.key === 'Enter' || event.type === 'click') {
             if (query.length > 0) {
+                navigate('/')
                 window.scrollTo(0, 0)
                 dispatch(searchMovies(query))
                 dispatch(setCurrentMovieListName('Search results'))
