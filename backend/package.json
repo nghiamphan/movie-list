@@ -9,7 +9,7 @@
         "build": "@powershell Remove-Item -Recurse -Force dist && cd ../movie-list-frontend && npm run build && @powershell Copy-Item dist -Recurse ../movie-list-backend",
         "build:prod": "npm run build && npm run start",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "lint": "eslint ."
+        "lint": "eslint . --ignore-pattern /dist"
     },
     "author": "Nghia Phan",
     "license": "MIT",
