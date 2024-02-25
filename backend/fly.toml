@@ -6,6 +6,9 @@
 app = 'movie-list'
 primary_region = 'yyz'
 
+[env]
+  PORT = "3000"
+
 [build]
 
 [http_service]
