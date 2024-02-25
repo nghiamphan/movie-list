@@ -36,5 +36,5 @@ jobs:
 
             - name: Build
               working-directory: ./backend
-              run: npm run build
+              run: npm run build:linux
 

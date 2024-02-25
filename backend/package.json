@@ -7,6 +7,7 @@
         "start": "node index.js",
         "dev": "cross-env NODE_ENV=development nodemon index.js",
         "build": "@powershell if (Test-Path dist) {Remove-Item -Recurse -Force dist} && cd ../frontend && npm run build && @powershell Copy-Item dist -Recurse ../backend",
+        "build:linux": "rm -rf dist && cd ../frontend && npm run build && cp -r dist ../backend",
         "build:prod": "npm run build && npm run start",
         "test": "echo \"Error: no test specified\" && exit 1",
         "lint": "eslint . --ignore-pattern /dist"
