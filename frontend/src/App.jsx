@@ -1,5 +1,5 @@
 /* prettier-disable multiline-ternary */
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom'
 import {
@@ -29,6 +29,7 @@ import {
 import { setUser, logout } from './reducers/userReducer'
 import { fetchMovies } from './reducers/movieReducer'
 import { LOGGGED_MOVIE_USER } from './utils/config'
+import AboutPage from './components/AboutPage'
 
 const App = () => {
     const dispatch = useDispatch()
@@ -89,6 +90,12 @@ const App = () => {
             <AppBar>
                 <Toolbar>
                     <Box sx={{ display: 'inline-flex', flexGrow: 1 }}>
+                        <Link to="/about">
+                            <Typography sx={{ alignSelf: 'center', marginLeft: 1, marginRight: 1 }}>
+                                <Button sx={{ color: 'white' }}>About</Button>
+                            </Typography>
+                        </Link>
+
                         <Link to="/">
                             <MovieListDrawer />
                         </Link>
@@ -144,6 +151,7 @@ const App = () => {
 
             <Routes>
                 <Route path="/" element={<Movies />} />
+                <Route path="/about" element={<AboutPage />} />
                 <Route
                     path="/watchlist"
                     element={
