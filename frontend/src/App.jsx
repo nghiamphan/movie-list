@@ -1,5 +1,5 @@
 /* prettier-disable multiline-ternary */
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom'
 import {
@@ -7,12 +7,13 @@ import {
     Box,
     Button,
     Container,
+    CssBaseline,
+    Switch,
     ThemeProvider,
     Toolbar,
     Typography,
     createTheme,
 } from '@mui/material'
-import { makeStyles } from '@mui/styles'
 
 import SearchMovies from './components/SearchMovies'
 import { LoginForm, RegisterForm } from './components/LoginForm'
@@ -29,30 +30,24 @@ import { setUser, logout } from './reducers/userReducer'
 import { fetchMovies } from './reducers/movieReducer'
 import { LOGGGED_MOVIE_USER } from './utils/config'
 
-const theme = createTheme({
-    palette: {
-        mode:
-            window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-                ? 'dark'
-                : 'light',
-    },
-})
-
-const useStyles = makeStyles({
-    '@global': {
-        body: {
-            backgroundColor: theme.palette.background.default,
-        },
-    },
-})
-
 const App = () => {
-    useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const user = useSelector((state) => state.user)
     const watchlist = useSelector((state) => state.movieList.watchlist)
     const watched = useSelector((state) => state.movieList.watched)
+
+    const [darkMode, setDarkMode] = useState(
+        window.localStorage.getItem('darkMode') !== null
+            ? window.localStorage.getItem('darkMode') === 'true'
+            : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    )
+
+    const theme = createTheme({
+        palette: {
+            mode: darkMode ? 'dark' : 'light',
+        },
+    })
 
     useEffect(() => {
         dispatch(fetchDefaultMovieLists())
@@ -83,8 +78,14 @@ const App = () => {
         }
     }
 
+    const handleDarkModeChange = (event) => {
+        setDarkMode(event.target.checked)
+        window.localStorage.setItem('darkMode', event.target.checked)
+    }
+
     return (
         <ThemeProvider theme={theme}>
+            <CssBaseline />
             <AppBar>
                 <Toolbar>
                     <Box sx={{ display: 'inline-flex', flexGrow: 1 }}>
@@ -133,6 +134,10 @@ const App = () => {
                                 </Link>
                             </>
                         )}
+                        <Switch checked={darkMode} onChange={handleDarkModeChange} />
+                        <Typography sx={{ alignSelf: 'center' }} variant="body2">
+                            Dark Mode
+                        </Typography>
                     </Box>
                 </Toolbar>
             </AppBar>
