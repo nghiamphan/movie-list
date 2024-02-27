@@ -22,7 +22,7 @@ export default defineConfig({
                 lang: 'en-US',
                 icons: [
                     {
-                        src: 'The_Criterion_Collection_Logo.svg',
+                        src: '/images/The_Criterion_Collection_Logo.svg',
                         sizes: 'any',
                         type: 'image/png',
                     },
