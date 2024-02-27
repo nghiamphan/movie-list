@@ -1,8 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
-import { CardMedia, Container, Link, ThemeProvider, Typography, createTheme } from '@mui/material'
+import { CardMedia, Container, Link, ThemeProvider, Tooltip, Typography, createTheme } from '@mui/material'
+import GitHubIcon from '@mui/icons-material/GitHub'
 
 const AboutPage = () => {
     const image = '/images/Letterboxd Logo.png'
+    const github = 'https://github.com/nghiamphan/movie-list'
     const deployment = 'https://movie-list.fly.dev/'
 
     const typographyTheme = createTheme({
@@ -85,11 +87,20 @@ const AboutPage = () => {
                 </Typography>
 
                 <Typography variant="h5">Tools</Typography>
-                <Typography variant="body1">
+                <Typography variant="body1" component="div">
                     Frontend: Javascript, React, React-Redux, Axios, React-Router, Material UI.
                     <br />
                     Backend: NodeJS, Express, PostgresSQL, Sequelize, JSON Web Token, Bcrypt, Dotenv, GitHub
                     Actions.
+                    <br />
+                    <Typography sx={{ marginTop: 2 }} variant="subtitle1">
+                        GitHub repository:{' '}
+                        <Link href={github} target="_blank">
+                            <Tooltip title="GitHub">
+                                <GitHubIcon sx={{ verticalAlign: 'top' }} />
+                            </Tooltip>
+                        </Link>
+                    </Typography>
                 </Typography>
 
                 <Typography variant="h5">Deployment</Typography>
