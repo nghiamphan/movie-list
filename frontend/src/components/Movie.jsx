@@ -67,8 +67,12 @@ const Movie = ({ index, movie }) => {
                 <CardMedia
                     component="img"
                     sx={{ minWidth: 150, width: 150, height: '100%', py: 1 }}
-                    image={poster}
+                    image={poster !== 'N/A' ? poster : '/images/The_Criterion_Collection_Logo.svg'}
                     alt={title}
+                    onError={(e) => {
+                        e.target.onerror = null
+                        e.target.src = '/images/The_Criterion_Collection_Logo.svg'
+                    }}
                 />
 
                 <CardContent sx={{ width: 1000, py: 1 }}>
