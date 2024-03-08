@@ -157,14 +157,22 @@ const Movies = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        window.addEventListener('scroll', () => {
+        let hasFetched = false
+        const onScroll = () => {
             if (
+                !hasFetched &&
                 window.innerHeight + document.documentElement.scrollTop ===
-                document.documentElement.offsetHeight
+                    document.documentElement.offsetHeight
             ) {
+                hasFetched = true
                 dispatch(fetchAdditionalMovies())
+            } else if (hasFetched) {
+                hasFetched = false
             }
-        })
+        }
+
+        window.addEventListener('scroll', onScroll)
+        return () => window.removeEventListener('scroll', onScroll)
     }, [])
 
     return (
