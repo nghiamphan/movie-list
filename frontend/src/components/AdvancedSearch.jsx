@@ -64,30 +64,13 @@ const AdvancedSearch = () => {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 0.5,
-        marginBottom: 0.5,
     }
 
-    const listRowStyle = {
+    const columnStyle = {
         display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-    }
-
-    const inputLabelStyle = {
-        width: '10%',
-        minWidth: 100,
-        fontWeight: 'bold',
-    }
-
-    const middleLabelStyle = {
-        marginLeft: 1,
-        marginRight: 1,
-    }
-
-    const inputStyle = {
-        height: 25,
-        fontSize: 14,
+        flexDirection: 'column',
+        marginRight: 20,
+        '& .MuiTextField-root': { marginTop: 1 },
     }
 
     const buttonStyle = {
@@ -106,181 +89,148 @@ const AdvancedSearch = () => {
 
             {!hideAdvancedSearch && (
                 <>
-                    <Box sx={rowStyle}>
-                        <Typography sx={inputLabelStyle} variant="subtitle1">
-                            Title
-                        </Typography>
-                        <TextField
-                            InputProps={{ sx: inputStyle }}
-                            type="text"
-                            name="title"
-                            value={search.title}
-                            onChange={handleChange}
-                            placeholder="Braveheart"
-                        />
-                    </Box>
-
-                    <Box sx={rowStyle}>
-                        <Typography sx={inputLabelStyle} variant="subtitle1">
-                            Year
-                        </Typography>
-                        <TextField
-                            InputProps={{ sx: inputStyle }}
-                            type="number"
-                            name="yearMin"
-                            value={search.yearMin}
-                            onChange={handleChange}
-                            placeholder="1995"
-                        />
-                        <Typography sx={middleLabelStyle} variant="subtitle1">
-                            to
-                        </Typography>
-                        <TextField
-                            InputProps={{ sx: inputStyle }}
-                            type="number"
-                            name="yearMax"
-                            value={search.yearMax}
-                            onChange={handleChange}
-                            placeholder="1995"
-                        />
-                    </Box>
-
-                    <Box sx={rowStyle}>
-                        <Typography sx={inputLabelStyle} variant="subtitle1">
-                            Director
-                        </Typography>
-                        <TextField
-                            InputProps={{ sx: inputStyle }}
-                            type="text"
-                            name="director"
-                            value={search.director}
-                            onChange={handleChange}
-                            placeholder="Mel Gibson"
-                        />
-                    </Box>
-
-                    <Box sx={rowStyle}>
-                        <Typography sx={inputLabelStyle} variant="subtitle1">
-                            Actor
-                        </Typography>
-                        <TextField
-                            InputProps={{ sx: inputStyle }}
-                            type="text"
-                            name="actors"
-                            value={search.actors}
-                            onChange={handleChange}
-                            placeholder="Mel Gibson"
-                        />
-                    </Box>
-
-                    <Box sx={rowStyle}>
-                        <Typography sx={inputLabelStyle} variant="subtitle1">
-                            Country
-                        </Typography>
-                        <TextField
-                            InputProps={{ sx: inputStyle }}
-                            type="text"
-                            name="country"
-                            value={search.country}
-                            onChange={handleChange}
-                            placeholder="United States"
-                        />
-                    </Box>
-
-                    <Box sx={rowStyle}>
-                        <Typography sx={inputLabelStyle} variant="subtitle1">
-                            Genre
-                        </Typography>
-                        <TextField
-                            InputProps={{ sx: inputStyle }}
-                            type="text"
-                            name="genre"
-                            value={search.genre}
-                            onChange={handleChange}
-                            placeholder="Drama"
-                        />
-                    </Box>
-
-                    <Box sx={rowStyle}>
-                        <Typography sx={inputLabelStyle} variant="subtitle1">
-                            Exclude Genre
-                        </Typography>
-                        <TextField
-                            InputProps={{ sx: inputStyle }}
-                            type="text"
-                            name="notGenre"
-                            value={search.notGenre}
-                            onChange={handleChange}
-                            placeholder="Documentary"
-                        />
-                    </Box>
-
-                    <Box sx={rowStyle}>
-                        <Typography sx={inputLabelStyle} variant="subtitle1">
-                            IMDB Votes
-                        </Typography>
-                        <TextField
-                            InputProps={{ sx: inputStyle }}
-                            type="number"
-                            name="imdbVotesMin"
-                            value={search.imdbVotesMin}
-                            onChange={handleChange}
-                            placeholder="10000"
-                        />
-                        <Typography sx={middleLabelStyle} variant="subtitle1">
-                            to
-                        </Typography>
-                        <TextField
-                            InputProps={{ sx: inputStyle }}
-                            type="number"
-                            name="imdbVotesMax"
-                            value={search.imdbVotesMax}
-                            onChange={handleChange}
-                            placeholder="1000000"
-                        />
-                    </Box>
-
-                    <Box sx={rowStyle}>
-                        <Typography sx={inputLabelStyle} variant="subtitle1">
-                            IMDB Rating
-                        </Typography>
-                        <TextField
-                            InputProps={{ sx: inputStyle }}
-                            type="number"
-                            name="imdbRatingMin"
-                            value={search.imdbRatingMin}
-                            onChange={handleChange}
-                            placeholder="7"
-                        />
-                        <Typography sx={middleLabelStyle} variant="subtitle1">
-                            to
-                        </Typography>
-                        <TextField
-                            InputProps={{ sx: inputStyle }}
-                            type="number"
-                            name="imdbRatingMax"
-                            value={search.imdbRatingMax}
-                            onChange={handleChange}
-                            placeholder="9"
-                        />
-                    </Box>
-
-                    <Typography sx={inputLabelStyle} variant="subtitle1">
-                        In Movie Lists
-                    </Typography>
-
-                    {movieListNames.map((name) => (
-                        <Box key={name} sx={listRowStyle}>
-                            <Checkbox
-                                sx={{ height: 25, width: 25 }}
-                                type="checkbox"
-                                name={name}
-                                checked={search.inMovieLists.includes(name)}
-                                onChange={handleCheckboxChange}
+                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                        <Box sx={columnStyle}>
+                            <TextField
+                                size="small"
+                                label="Title"
+                                type="text"
+                                name="title"
+                                value={search.title}
+                                onChange={handleChange}
+                                placeholder="Braveheart"
                             />
-                            <Typography sx={{ fontSize: 13 }}>{name}</Typography>
+
+                            <TextField
+                                size="small"
+                                label="From Year"
+                                type="number"
+                                name="yearMin"
+                                value={search.yearMin}
+                                onChange={handleChange}
+                                placeholder="1995"
+                            />
+
+                            <TextField
+                                size="small"
+                                label="To Year"
+                                type="number"
+                                name="yearMax"
+                                value={search.yearMax}
+                                onChange={handleChange}
+                                placeholder="1995"
+                            />
+
+                            <TextField
+                                size="small"
+                                label="Director"
+                                type="text"
+                                name="director"
+                                value={search.director}
+                                onChange={handleChange}
+                                placeholder="Mel Gibson"
+                            />
+
+                            <TextField
+                                size="small"
+                                label="Actor"
+                                type="text"
+                                name="actors"
+                                value={search.actors}
+                                onChange={handleChange}
+                                placeholder="Mel Gibson"
+                            />
+
+                            <TextField
+                                size="small"
+                                label="Country"
+                                type="text"
+                                name="country"
+                                value={search.country}
+                                onChange={handleChange}
+                                placeholder="United States"
+                            />
+
+                            <TextField
+                                size="small"
+                                label="Genre"
+                                type="text"
+                                name="genre"
+                                value={search.genre}
+                                onChange={handleChange}
+                                placeholder="Drama"
+                            />
+
+                            <TextField
+                                size="small"
+                                label="Exclude Genre"
+                                type="text"
+                                name="notGenre"
+                                value={search.notGenre}
+                                onChange={handleChange}
+                                placeholder="Documentary"
+                            />
+
+                            <TextField
+                                size="small"
+                                label="Min IMDB Votes"
+                                type="number"
+                                name="imdbVotesMin"
+                                value={search.imdbVotesMin}
+                                onChange={handleChange}
+                                placeholder="10000"
+                            />
+
+                            <TextField
+                                size="small"
+                                label="Max IMDB Votes"
+                                type="number"
+                                name="imdbVotesMax"
+                                value={search.imdbVotesMax}
+                                onChange={handleChange}
+                                placeholder="1000000"
+                            />
+
+                            <TextField
+                                size="small"
+                                label="Min IMDB Rating"
+                                type="number"
+                                name="imdbRatingMin"
+                                value={search.imdbRatingMin}
+                                onChange={handleChange}
+                                placeholder="7"
+                            />
+
+                            <TextField
+                                size="small"
+                                label="Max IMDB Rating"
+                                type="number"
+                                name="imdbRatingMax"
+                                value={search.imdbRatingMax}
+                                onChange={handleChange}
+                                placeholder="9"
+                            />
                         </Box>
-                    ))}
+
+                        <Box sx={columnStyle}>
+                            <Typography sx={{ fontWeight: 'bold' }} variant="subtitle1">
+                                In Movie Lists
+                            </Typography>
+
+                            {movieListNames.map((name) => (
+                                <Box key={name} sx={rowStyle}>
+                                    <Checkbox
+                                        sx={{ height: 25, width: 25 }}
+                                        type="checkbox"
+                                        name={name}
+                                        checked={search.inMovieLists.includes(name)}
+                                        onChange={handleCheckboxChange}
+                                    />
+                                    <Typography sx={{ fontSize: 13 }}>{name}</Typography>
+                                </Box>
+                            ))}
+                        </Box>
+                    </Box>
 
                     <Button sx={buttonStyle} variant="contained" onClick={handleSearch}>
                         Search
