@@ -5,7 +5,7 @@ import { Box, InputBase } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import SearchIcon from '@mui/icons-material/Search'
 
-import { searchMovies } from '../reducers/movieReducer'
+import { searchMovies, setMovies } from '../reducers/movieReducer'
 import { setCurrentMovieList } from '../reducers/movieListReducer'
 
 const SearchMovies = () => {
@@ -16,11 +16,14 @@ const SearchMovies = () => {
 
     const handleSearch = (event) => {
         if (event.key === 'Enter' || event.type === 'click') {
+            navigate('/')
+            window.scrollTo(0, 0)
+            dispatch(setCurrentMovieList({ name: 'Search results' }))
+
             if (query.length > 0) {
-                navigate('/')
-                window.scrollTo(0, 0)
                 dispatch(searchMovies(query))
-                dispatch(setCurrentMovieList({ name: 'Search results' }))
+            } else {
+                dispatch(setMovies([]))
             }
         }
     }
