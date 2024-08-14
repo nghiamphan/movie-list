@@ -45,7 +45,10 @@ const SearchMovies = () => {
                 onChange={(event) => setQuery(event.target.value)}
                 onKeyDown={handleSearch}
             />
-            <SearchIcon sx={{ marginRight: 1, color: theme.palette.text.primary }} onClick={handleSearch} />
+            <SearchIcon
+                sx={{ marginRight: 1, color: theme.palette.text.primary, cursor: 'pointer' }}
+                onClick={handleSearch}
+            />
         </Box>
     )
 }
