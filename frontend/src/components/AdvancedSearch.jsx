@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { advancedSearchMovies, orderMovies } from '../reducers/movieReducer'
+import { advancedSearchMovies, excludeMovies, orderMovies } from '../reducers/movieReducer'
 
 const AdvancedSearch = () => {
     const dispatch = useDispatch()
@@ -34,9 +34,17 @@ const AdvancedSearch = () => {
         imdbRatingMax: '',
         inMovieLists: [],
     })
+    const [excludeWatchlist, setExcludeWatchlist] = useState(true)
+    const [excludeWatched, setExcludeWatched] = useState(true)
 
     const handleSearch = async () => {
-        dispatch(advancedSearchMovies(search))
+        await dispatch(advancedSearchMovies(search))
+        if (excludeWatchlist) {
+            dispatch(excludeMovies('watchlist'))
+        }
+        if (excludeWatched) {
+            dispatch(excludeMovies('watched'))
+        }
     }
 
     const handleChange = (e) => {
@@ -71,6 +79,11 @@ const AdvancedSearch = () => {
         flexDirection: 'column',
         marginRight: 20,
         '& .MuiTextField-root': { marginTop: 1 },
+    }
+
+    const checkBoxStyle = {
+        height: 25,
+        width: 25,
     }
 
     const buttonStyle = {
@@ -220,7 +233,7 @@ const AdvancedSearch = () => {
                             {movieListNames.map((name) => (
                                 <Box key={name} sx={rowStyle}>
                                     <Checkbox
-                                        sx={{ height: 25, width: 25 }}
+                                        sx={checkBoxStyle}
                                         type="checkbox"
                                         name={name}
                                         checked={search.inMovieLists.includes(name)}
@@ -229,6 +242,32 @@ const AdvancedSearch = () => {
                                     <Typography sx={{ fontSize: 13 }}>{name}</Typography>
                                 </Box>
                             ))}
+
+                            <Typography sx={{ fontWeight: 'bold', marginTop: 5 }} variant="subtitle1">
+                                Exclude movies from
+                            </Typography>
+
+                            <Box sx={rowStyle}>
+                                <Checkbox
+                                    sx={checkBoxStyle}
+                                    type="checkbox"
+                                    value={excludeWatchlist}
+                                    checked={excludeWatchlist}
+                                    onChange={() => setExcludeWatchlist(!excludeWatchlist)}
+                                />
+                                <Typography sx={{ fontSize: 13 }}>Watchlist</Typography>
+                            </Box>
+
+                            <Box sx={rowStyle}>
+                                <Checkbox
+                                    sx={checkBoxStyle}
+                                    type="checkbox"
+                                    value={excludeWatched}
+                                    checked={excludeWatched}
+                                    onChange={() => setExcludeWatched(!excludeWatched)}
+                                />
+                                <Typography sx={{ fontSize: 13 }}>Watch history</Typography>
+                            </Box>
                         </Box>
                     </Box>
 

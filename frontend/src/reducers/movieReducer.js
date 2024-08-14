@@ -47,6 +47,21 @@ export const advancedSearchMovies = (body) => {
 }
 
 /**
+ * This function filters out movies that are in the specified list.
+ * @param {string} listName - The name of the list to include ("watchlist", "watched")
+ */
+export const excludeMovies = (listName) => {
+    return (dispatch, getState) => {
+        const movies = getState().movies
+        const excludedMovieIds = getState().movieList[listName].imdbIds
+
+        // Filter out movies that are in the excluded list
+        const filteredMovies = movies.filter((movie) => !excludedMovieIds.includes(movie.imdbId))
+        dispatch(setMovies(filteredMovies))
+    }
+}
+
+/**
  * @param {string} orderBy - The field to order the movies by. Eg. 'imdbRating', 'imdbVotes'.
  */
 export const orderMovies = (orderBy) => {

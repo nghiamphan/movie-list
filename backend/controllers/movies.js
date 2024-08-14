@@ -120,7 +120,7 @@ router.post('/search', async (req, res) => {
  *   "imdbVotesMax": "20000",
  *   "imdbRatingMin": "7",
  *   "imdbRatingMax": "8",
- *    "inMovieLists": ["Criterion Collection", "BFI 100 British Films (1999)"]
+ *   "inMovieLists": ["Criterion Collection", "BFI 100 British Films (1999)"]
  * }
  */
 router.post('/advanced-search', async (req, res) => {
