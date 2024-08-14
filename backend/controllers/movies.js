@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { Op, Sequelize } = require('sequelize')
+const { Op, Sequelize, literal } = require('sequelize')
 const { Movie } = require('../models')
 const { sequelize } = require('../util/db')
 
@@ -101,6 +101,137 @@ router.post('/search', async (req, res) => {
     }
 
     movies.sort((a, b) => a.dataValues.index - b.dataValues.index)
+
+    res.json(movies)
+})
+
+/*
+ * POST /api/movies/advanced-search
+ * {
+ *   "title": "Brazil",
+ *   "yearMin": 1950,
+ *   "yearMax": 2012,
+ *   "director": "Terry Gilliam",
+ *   "actors": "Jonathan Pryce",
+ *   "country": "United States",
+ *   "genre": "Drama",
+ *   "notGenre": "Documentary",
+ *   "imdbVotesMin": "10000",
+ *   "imdbVotesMax": "20000",
+ *   "imdbRatingMin": "7",
+ *   "imdbRatingMax": "8",
+ *    "inMovieLists": ["Criterion Collection", "BFI 100 British Films (1999)"]
+ * }
+ */
+router.post('/advanced-search', async (req, res) => {
+    const whereCondition = {}
+
+    // Add title condition
+    if (req.body.title) {
+        whereCondition.title = {
+            [Op.iLike]: req.body.title,
+        }
+    }
+
+    // Add year condition
+    if (req.body.yearMin) {
+        whereCondition.year = {
+            [Op.ne]: 'N/A',
+            [Op.gte]: req.body.yearMin,
+        }
+    }
+    if (req.body.yearMax) {
+        whereCondition.year = {
+            ...whereCondition.year,
+            [Op.ne]: 'N/A',
+            [Op.lte]: req.body.yearMax,
+        }
+    }
+
+    // Add director condition
+    if (req.body.director) {
+        whereCondition.director = {
+            [Op.iLike]: req.body.director,
+        }
+    }
+
+    // Add actors condition
+    if (req.body.actors) {
+        whereCondition.actors = {
+            [Op.iLike]: req.body.actors,
+        }
+    }
+
+    // Add country condition
+    if (req.body.country) {
+        whereCondition.country = {
+            [Op.iLike]: req.body.country,
+        }
+    }
+
+    // Add genre condition
+    if (req.body.genre) {
+        whereCondition.genre = {
+            [Op.iLike]: req.body.genre,
+        }
+    }
+    if (req.body.notGenre) {
+        whereCondition.genre = {
+            ...whereCondition.genre,
+            [Op.notILike]: req.body.notGenre,
+        }
+    }
+
+    // Add imdbVotes condition
+    if (req.body.imdbVotesMin) {
+        const imdbVotesMin = parseInt(req.body.imdbVotesMin, 10)
+        whereCondition.imdbVotes = {
+            [Op.and]: [
+                { [Op.ne]: 'N/A' },
+                literal(`CAST(REPLACE(imdb_votes, ',', '') AS INTEGER) >= ${imdbVotesMin}`),
+            ],
+        }
+    }
+    if (req.body.imdbVotesMax) {
+        const imdbVotesMax = parseInt(req.body.imdbVotesMax)
+        whereCondition.imdbVotes = {
+            ...whereCondition.imdbVotes,
+            [Op.and]: [
+                ...(whereCondition.imdbVotes[Op.and] || [{ [Op.ne]: 'N/A' }]),
+                literal(`CAST(REPLACE(imdb_votes, ',', '') AS INTEGER) <= ${imdbVotesMax}`),
+            ],
+        }
+    }
+
+    // Add imdbRating condition
+    if (req.body.imdbRatingMin) {
+        const imdbRatingMin = parseFloat(req.body.imdbRatingMin, 0)
+        whereCondition.imdbRating = {
+            [Op.and]: [{ [Op.ne]: 'N/A' }, literal(`CAST(imdb_rating AS FLOAT) >= ${imdbRatingMin}`)],
+        }
+    }
+    if (req.body.imdbRatingMax) {
+        const imdbRatingMax = parseFloat(req.body.imdbRatingMax, 10)
+        whereCondition.imdbRating = {
+            ...whereCondition.imdbRating,
+            [Op.and]: [
+                ...(whereCondition.imdbRating[Op.and] || [{ [Op.ne]: 'N/A' }]),
+                literal(`CAST(imdb_rating AS FLOAT) <= ${imdbRatingMax}`),
+            ],
+        }
+    }
+
+    // Add movie list condition
+    if (req.body.inMovieLists) {
+        whereCondition.inMovieLists = {
+            [Op.contains]: req.body.inMovieLists,
+        }
+    }
+
+    const movies = await Movie.findAll({
+        where: whereCondition,
+        limit: 100,
+    })
 
     res.json(movies)
 })

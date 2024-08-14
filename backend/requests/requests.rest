@@ -22,6 +22,21 @@ Content-Type: application/json
     "imdbIds": ["tt0112573", "tt1217209"]
 }
 
+
+### advanced search
+POST http://localhost:3001/api/movies/advanced-search
+Content-Type: application/json
+
+{
+    "yearMin": "1950",
+    "yearMax": "2020",
+    "notGenre": "Documentary",
+    "imdbVotesMin": "100000",
+    "imdbVotesMax": "1000000",
+    "imdbRatingMin": "7",
+    "inMovieLists": ["Criterion Collection", "BFI 100 British Films (1999)"]
+}
+
 ### post movie
 POST http://localhost:3001/api/movies
 Content-Type: application/json
