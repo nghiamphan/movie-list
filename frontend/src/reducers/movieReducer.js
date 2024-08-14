@@ -20,6 +20,13 @@ export const searchMovies = (query) => {
     }
 }
 
+export const advancedSearchMovies = (body) => {
+    return async (dispatch) => {
+        const movies = await movieService.advancedSearchMovies(body)
+        dispatch(setMovies(movies))
+    }
+}
+
 // fetch the first 100 movies
 export const fetchMovies = (imdbIds) => {
     return async (dispatch) => {

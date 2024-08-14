@@ -1,5 +1,4 @@
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import StarIcon from '@mui/icons-material/Star'
 import {
     Box,
     Card,
@@ -12,10 +11,12 @@ import {
     Typography,
 } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import StarIcon from '@mui/icons-material/Star'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { addToMovieList, removeFromMovieList } from '../reducers/movieListReducer'
 import { fetchAdditionalMovies } from '../reducers/movieReducer'
+import AdvancedSearch from './AdvancedSearch'
 
 const Movie = ({ index, movie }) => {
     const theme = useTheme()
@@ -181,6 +182,7 @@ const Movies = () => {
 
     return (
         <Container sx={{ marginTop: 12, color: theme.palette.text.primary }}>
+            {listName === 'Search results' && <AdvancedSearch />}
             {listName ? (
                 <Typography sx={{ marginBottom: 2 }} variant="h5">
                     {listName}
@@ -188,6 +190,7 @@ const Movies = () => {
             ) : (
                 <p>Choose some movie list from the menu bar.</p>
             )}
+
             {movies.length === 0 && listName ? (
                 <Typography>No movies in this list</Typography>
             ) : (

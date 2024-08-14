@@ -12,6 +12,15 @@ const searchMovies = async (query) => {
     return movies
 }
 
+const advancedSearchMovies = async (body) => {
+    const url = `${backendBaseUrl}/advanced-search`
+
+    const response = await axios.post(url, body)
+
+    const movies = response.data
+    return movies
+}
+
 const getMoviesByImdbIds = async (imdbIds) => {
     const url = `${backendBaseUrl}/search`
 
@@ -25,4 +34,4 @@ const getMoviesByImdbIds = async (imdbIds) => {
     return movies
 }
 
-export default { searchMovies, getMoviesByImdbIds }
+export default { searchMovies, advancedSearchMovies, getMoviesByImdbIds }
