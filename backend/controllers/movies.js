@@ -129,7 +129,7 @@ router.post('/advanced-search', async (req, res) => {
     // Add title condition
     if (req.body.title) {
         whereCondition.title = {
-            [Op.iLike]: req.body.title,
+            [Op.iLike]: `%${req.body.title}%`,
         }
     }
 
@@ -151,34 +151,34 @@ router.post('/advanced-search', async (req, res) => {
     // Add director condition
     if (req.body.director) {
         whereCondition.director = {
-            [Op.iLike]: req.body.director,
+            [Op.iLike]: `%${req.body.director}%`,
         }
     }
 
     // Add actors condition
     if (req.body.actors) {
         whereCondition.actors = {
-            [Op.iLike]: req.body.actors,
+            [Op.iLike]: `%${req.body.actors}%`,
         }
     }
 
     // Add country condition
     if (req.body.country) {
         whereCondition.country = {
-            [Op.iLike]: req.body.country,
+            [Op.iLike]: `%${req.body.country}%`,
         }
     }
 
     // Add genre condition
     if (req.body.genre) {
         whereCondition.genre = {
-            [Op.iLike]: req.body.genre,
+            [Op.iLike]: `%${req.body.genre}%`,
         }
     }
     if (req.body.notGenre) {
         whereCondition.genre = {
             ...whereCondition.genre,
-            [Op.notILike]: req.body.notGenre,
+            [Op.notILike]: `%${req.body.notGenre}%`,
         }
     }
 
