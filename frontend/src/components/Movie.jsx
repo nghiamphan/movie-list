@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { addToMovieList, removeFromMovieList } from '../reducers/movieListReducer'
 import { fetchAdditionalMovies } from '../reducers/movieReducer'
-import AdvancedSearch from './AdvancedSearch'
+import AdvancedSearch, { OrderMovies } from './AdvancedSearch'
 
 const Movie = ({ index, movie }) => {
     const theme = useTheme()
@@ -180,13 +180,24 @@ const Movies = () => {
         return () => window.removeEventListener('scroll', onScroll)
     }, [])
 
+    const rowStyle = {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    }
+
     return (
         <Container sx={{ marginTop: 12, color: theme.palette.text.primary }}>
             {listName === 'Search results' && <AdvancedSearch />}
             {listName ? (
-                <Typography sx={{ marginBottom: 2 }} variant="h5">
-                    {listName}
-                </Typography>
+                <Box sx={rowStyle}>
+                    <Typography variant="h5">
+                        {listName}{' '}
+                        {listName === 'Search results' && movies.length > 0 && `(${movies.length} movies)`}
+                    </Typography>
+                    {listName === 'Search results' && <OrderMovies />}
+                </Box>
             ) : (
                 <p>Choose some movie list from the menu bar.</p>
             )}

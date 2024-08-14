@@ -1,7 +1,17 @@
-import { Box, Button, Checkbox, TextField, Typography } from '@mui/material'
+import {
+    Box,
+    Button,
+    Checkbox,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
+    TextField,
+    Typography,
+} from '@mui/material'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { advancedSearchMovies } from '../reducers/movieReducer'
+import { advancedSearchMovies, orderMovies } from '../reducers/movieReducer'
 
 const AdvancedSearch = () => {
     const dispatch = useDispatch()
@@ -26,7 +36,6 @@ const AdvancedSearch = () => {
     })
 
     const handleSearch = async () => {
-        console.log(search)
         dispatch(advancedSearchMovies(search))
     }
 
@@ -282,4 +291,26 @@ const AdvancedSearch = () => {
     )
 }
 
+const OrderMovies = () => {
+    const dispatch = useDispatch()
+    const [orderBy, setOrderBy] = useState('')
+
+    const handleChange = (event) => {
+        const value = event.target.value
+        setOrderBy(value)
+        dispatch(orderMovies(value))
+    }
+
+    return (
+        <FormControl sx={{ width: 200 }}>
+            <InputLabel id="order-by-label">Order By</InputLabel>
+            <Select labelId="order-by-label" label="Order By" value={orderBy} onChange={handleChange}>
+                <MenuItem value="imdbVotes">IMDB Votes</MenuItem>
+                <MenuItem value="imdbRating">IMDB Rating</MenuItem>
+            </Select>
+        </FormControl>
+    )
+}
+
 export default AdvancedSearch
+export { OrderMovies }
