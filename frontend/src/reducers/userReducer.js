@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import movieListService from '../services/movieLists'
+import { LOGGGED_MOVIE_USER } from '../utils/config'
+import logger from '../utils/logger'
 import {
     fetchWatched,
     fetchWatchlist,
@@ -8,8 +10,6 @@ import {
     setWatchlist,
 } from './movieListReducer'
 import { fetchMovies } from './movieReducer'
-import { LOGGGED_MOVIE_USER } from '../utils/config'
-import logger from '../utils/logger'
 
 /*
  * state: {
@@ -25,6 +25,13 @@ const userReducer = createSlice({
     },
 })
 
+/**
+ * Set the logged in user in the Redux store and local storage.
+ * @param {Object} user
+ * @param {string} user.token - The user token.
+ * @param {string} user.id - The user id.
+ * @param {string} user.username - The user username.
+ */
 export const login = (user) => {
     return async (dispatch) => {
         try {

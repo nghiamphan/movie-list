@@ -33,6 +33,14 @@ const getWatched = async () => {
     return response.data
 }
 
+/**
+ * @param {Object} movieList
+ * @param {string} movieList.id
+ * @param {string} movieList.name
+ * @param {Array<string>} movieList.imdbIds
+ * @param {string} movieList.type - Eg: "default', 'watchlist', 'watched'
+ * @param {string} movieList.userId
+ */
 const create = async (movieList) => {
     const config = {
         headers: { Authorization: token },
@@ -41,14 +49,13 @@ const create = async (movieList) => {
     return response.data
 }
 
-/*
- * movieList: {
- *    id,
- *    name,
- *    imdbIds: [imdbId, imdbId, ...],
- *    userId,
- *    type,
- * }
+/**
+ * @param {Object} movieList
+ * @param {string} movieList.id
+ * @param {string} movieList.name
+ * @param {Array<string>} movieList.imdbIds
+ * @param {string} movieList.type - Eg: "default', 'watchlist', 'watched'
+ * @param {string} movieList.userId
  */
 const update = async (movieList) => {
     const config = {

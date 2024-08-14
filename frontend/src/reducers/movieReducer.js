@@ -13,6 +13,9 @@ const movieSearchReducer = createSlice({
     },
 })
 
+/**
+ * @param {string} query - The search query.
+ */
 export const searchMovies = (query) => {
     return async (dispatch) => {
         const movies = await movieService.searchMovies(query)
