@@ -222,7 +222,7 @@ router.post('/advanced-search', async (req, res) => {
         whereCondition.imdbVotes = {
             ...whereCondition.imdbVotes,
             [Op.and]: [
-                ...(whereCondition.imdbVotes[Op.and] || [{ [Op.ne]: 'N/A' }]),
+                ...(whereCondition.imdbVotes || [{ [Op.ne]: 'N/A' }]),
                 literal(`CAST(REPLACE(imdb_votes, ',', '') AS INTEGER) <= ${imdbVotesMax}`),
             ],
         }
@@ -240,7 +240,7 @@ router.post('/advanced-search', async (req, res) => {
         whereCondition.imdbRating = {
             ...whereCondition.imdbRating,
             [Op.and]: [
-                ...(whereCondition.imdbRating[Op.and] || [{ [Op.ne]: 'N/A' }]),
+                ...(whereCondition.imdbRating || [{ [Op.ne]: 'N/A' }]),
                 literal(`CAST(imdb_rating AS FLOAT) <= ${imdbRatingMax}`),
             ],
         }
