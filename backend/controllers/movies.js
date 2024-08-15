@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const { Op, Sequelize, literal } = require('sequelize')
-const { Movie } = require('../models')
+const { Movie, MovieList } = require('../models')
 const { sequelize } = require('../util/db')
 
 const movieFinder = async (req, res, next) => {
@@ -121,9 +121,34 @@ router.post('/search', async (req, res) => {
  *   "imdbRatingMin": "7",
  *   "imdbRatingMax": "8",
  *   "inMovieLists": ["Criterion Collection", "BFI 100 British Films (1999)"]
+ *   "watchListId": "",
+ *   "watchedId": "",
  * }
  */
 router.post('/advanced-search', async (req, res) => {
+    // Get the list of movie IDs to exclude from the watchlist and watch history
+    let excludeMovieIds = new Set()
+    if (req.body.watchListId) {
+        const watchList = await MovieList.findOne({
+            where: {
+                id: req.body.watchListId,
+            },
+        })
+        watchList.imdbIds.forEach((id) => excludeMovieIds.add(id))
+    }
+
+    if (req.body.watchedId) {
+        const watched = await MovieList.findOne({
+            where: {
+                id: req.body.watchedId,
+            },
+        })
+        watched.imdbIds.forEach((id) => excludeMovieIds.add(id))
+    }
+
+    excludeMovieIds = Array.from(excludeMovieIds)
+
+    // Get the list of movie IDs based on the advanced search criteria
     const whereCondition = {}
 
     // Add title condition
@@ -225,6 +250,13 @@ router.post('/advanced-search', async (req, res) => {
     if (req.body.inMovieLists) {
         whereCondition.inMovieLists = {
             [Op.contains]: req.body.inMovieLists,
+        }
+    }
+
+    // Exclude movies in the watchlist and watch history
+    if (excludeMovieIds.length > 0) {
+        whereCondition.imdbId = {
+            [Op.notIn]: excludeMovieIds,
         }
     }
 

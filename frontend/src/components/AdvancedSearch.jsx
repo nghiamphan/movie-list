@@ -11,12 +11,15 @@ import {
 } from '@mui/material'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { advancedSearchMovies, excludeMovies, orderMovies } from '../reducers/movieReducer'
+import { advancedSearchMovies, orderMovies } from '../reducers/movieReducer'
 
 const AdvancedSearch = () => {
     const dispatch = useDispatch()
     const movieLists = useSelector((state) => state.movieList.defaultMovieLists)
     const movieListNames = movieLists.map((movieList) => movieList.name)
+
+    const watchListId = useSelector((state) => state.movieList.watchlist.id)
+    const watchedId = useSelector((state) => state.movieList.watched.id)
 
     const [hideAdvancedSearch, setHideAdvancedSearch] = useState(true)
     const [search, setSearch] = useState({
@@ -33,18 +36,16 @@ const AdvancedSearch = () => {
         imdbRatingMin: '',
         imdbRatingMax: '',
         inMovieLists: [],
+        watchListId: null,
+        watchedId: '',
     })
     const [excludeWatchlist, setExcludeWatchlist] = useState(true)
     const [excludeWatched, setExcludeWatched] = useState(true)
 
     const handleSearch = async () => {
+        search.watchListId = excludeWatchlist ? watchListId : null
+        search.watchedId = excludeWatched ? watchedId : null
         await dispatch(advancedSearchMovies(search))
-        if (excludeWatchlist) {
-            dispatch(excludeMovies('watchlist'))
-        }
-        if (excludeWatched) {
-            dispatch(excludeMovies('watched'))
-        }
     }
 
     const handleChange = (e) => {
